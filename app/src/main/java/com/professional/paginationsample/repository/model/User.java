@@ -7,35 +7,35 @@ import java.util.ArrayList;
 public class User {
 
     @SerializedName("page")
-    private int page;
+    public int page;
 
     @SerializedName("per_page")
-    private int per_page;
+    public int per_page;
 
     @SerializedName("total")
-    private int total;
+    public int total;
 
     @SerializedName("total_pages")
-    private int total_pages;
+    public int total_pages;
 
     @SerializedName("data")
-    private ArrayList<Data> data;
+    public ArrayList<Data> data;
 
-    class Data {
+    public class Data {
         @SerializedName("id")
-        private int id;
+        public int id;
 
         @SerializedName("email")
-        private String email = "";
+        public String email = "";
 
         @SerializedName("first_name")
-        private String first_name = "";
+        public String first_name = "";
 
         @SerializedName("last_name")
-        private String last_name = "";
+        public String last_name = "";
 
         @SerializedName("avatar")
-        private String avatar = "";
+        public String avatar = "";
     }
 
 }
