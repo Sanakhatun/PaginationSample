@@ -21,11 +21,11 @@ public class MainActivityViewModel extends ViewModel {
      * https://developer.android.com/topic/libraries/architecture/livedata
      */
 
-    public MutableLiveData<ArrayList<User.Data>> fetchUsersList = new MutableLiveData<>();
-    private ArrayList<User.Data> userArrayList;
+    public MutableLiveData<User> fetchUsers = new MutableLiveData<>();
+    private ArrayList<User> userArrayList;
 
-    public void fetchUsers() {
-        Call<User> call = ApiClient.getApiClient().fetchUsers();
+    public void fetchUsers(int pages) {
+        Call<User> call = ApiClient.getApiClient().fetchUsers(pages);
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -34,12 +34,7 @@ public class MainActivityViewModel extends ViewModel {
                     Log.i("Response", response.toString());
                     User user = response.body();
 
-                    userArrayList = new ArrayList<>();
-                    for (int i = 0; i < user.data.size(); i++) {
-                        userArrayList.add(user.data.get(i));
-                    }
-
-                    fetchUsersList.postValue(user.data);
+                    fetchUsers.postValue(user);
                 }
             }
 

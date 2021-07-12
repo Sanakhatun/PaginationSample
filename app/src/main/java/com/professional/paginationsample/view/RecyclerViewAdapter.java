@@ -24,8 +24,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     private ArrayList<User.Data> arrayList;
 
-    int page = 0, limit = 2;
-
     public RecyclerViewAdapter(Context context, ArrayList<User.Data> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
@@ -58,6 +56,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return arrayList != null ? arrayList.size() : 0;
     }
+
 }
