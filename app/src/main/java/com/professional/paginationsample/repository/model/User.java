@@ -21,7 +21,8 @@ public class User {
     @SerializedName("data")
     public ArrayList<Data> data;
 
-    public class Data {
+    public static class Data {
+
         @SerializedName("id")
         public int id;
 
@@ -36,6 +37,10 @@ public class User {
 
         @SerializedName("avatar")
         public String avatar = "";
+
+        public void setFirstName(String first_name) {
+            this.first_name = first_name;
+        }
     }
 
 }

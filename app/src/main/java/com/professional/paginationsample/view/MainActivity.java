@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.professional.paginationsample.R;
 import com.professional.paginationsample.common.PaginationScrollListener;
@@ -57,19 +58,40 @@ public class MainActivity extends AppCompatActivity {
 
             if (currentPage == PAGE_START) {
                 getUsersList = user.data;
+
+                recyclerViewAdapter = new RecyclerViewAdapter(this, getUsersList);
+                rv_list.setAdapter(recyclerViewAdapter);
+
             } else {
+                getUsersList.remove(getUsersList.size() - 1);
+                recyclerViewAdapter.notifyItemRemoved(getUsersList.size());
                 getUsersList.addAll(user.data);
+
+                isLoading = false;
             }
 
-            Log.i(TAG, "getUsersList: " + getUsersList);
-
-            recyclerViewAdapter = new RecyclerViewAdapter(this, getUsersList);
-            rv_list.setAdapter(recyclerViewAdapter);
             recyclerViewAdapter.notifyDataSetChanged();
+            Log.i(TAG, "getUsersList: " + getUsersList);
 
             if (progress_circular.getVisibility() == View.VISIBLE) {
                 progress_circular.setVisibility(View.GONE);
             }
+        });
+
+        mainActivityViewModel.failure.observe(this, errorMsg -> {
+
+            if (currentPage == PAGE_START) {
+                progress_circular.setVisibility(View.GONE);
+                Toast.makeText(this, "Oops, Network Unavailable", Toast.LENGTH_SHORT).show();
+            }
+
+            if (getUsersList != null && getUsersList.size() > 0) {
+                getUsersList.remove(getUsersList.size() - 1);
+                recyclerViewAdapter.notifyItemRemoved(getUsersList.size());
+                currentPage--;
+                isLoading = false;
+            }
+
         });
 
     }
@@ -99,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
                 currentPage++;
                 isLoading = true; /* To indicate next page is loading */
                 mainActivityViewModel.fetchUsers(currentPage);
+
+                User.Data data = new User.Data();
+                data.setFirstName("progress");
+                getUsersList.add(getUsersList.size(), data);
+                recyclerViewAdapter.notifyItemInserted(getUsersList.size());
             }
 
             @Override
@@ -122,6 +149,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

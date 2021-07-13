@@ -22,7 +22,7 @@ public class MainActivityViewModel extends ViewModel {
      */
 
     public MutableLiveData<User> fetchUsers = new MutableLiveData<>();
-    private ArrayList<User> userArrayList;
+    public MutableLiveData<String> failure = new MutableLiveData<>();
 
     public void fetchUsers(int pages) {
         Call<User> call = ApiClient.getApiClient().fetchUsers(pages);
@@ -40,7 +40,7 @@ public class MainActivityViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                failure.postValue(t.getMessage());
             }
         });
     }
